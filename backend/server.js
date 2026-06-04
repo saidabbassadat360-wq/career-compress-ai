@@ -18,12 +18,13 @@ connectDB();
 const app = express();
 
 // 3. Configure Network Security Rules (CORS)
-const corsOptions = {
-  origin: process.env.CLIENT_URL || 'http://localhost:5173', // Matches Vite default port
-  credentials: true,
-  optionsSuccessStatus: 200
-};
-app.use(cors(corsOptions));
+
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
+
+
 
 // 4. Mount Request Parsers Middleware
 app.use(express.json()); // Allows the application to read incoming JSON data maps

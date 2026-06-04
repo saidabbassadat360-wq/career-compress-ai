@@ -44,8 +44,8 @@ const quizResultSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
+    
 quizResultSchema.index({ user: 1, category: 1 }, { unique: true });
 
 const QuizResult = mongoose.model('QuizResult', quizResultSchema);
-export default QuizResult;
+export default QuizResult;  
