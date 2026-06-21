@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import API from '../api/axios';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -19,9 +19,7 @@ export default function Login() {
 
     try {
       setLoading(true);
-
-      // Using the reliable 127.0.0.1 loopback address string to resolve network timeouts
-      const response = await axios.post("http://127.0.0.1:5000/api/auth/login", {
+      const response = await API.post('/auth/login', {
         email,
         password,
       });

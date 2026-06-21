@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
-import axios from "axios";
+import API from "../api/axios";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -32,9 +32,7 @@ export default function Register() {
 
     try {
       setLoading(true);
-      
-      // Fixed network host address string to bypass local DNS resolution blockers
-      const response = await axios.post("http://127.0.0.1:5000/api/auth/register", {
+      const response = await API.post('/auth/register', {
         name: form.name,
         email: form.email,
         password: form.password,
