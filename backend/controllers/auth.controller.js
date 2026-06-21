@@ -28,7 +28,17 @@ export const registerUser = async (req, res, next) => {
       res.status(400).json({ success: false, message: 'Invalid user registration input data.' });
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Server error during registration.' });
+    if (error.name === 'MongoNetworkError' || error.name === 'MongoServerError') {
+      res.status(503).json({ 
+        success: false, 
+        message: 'Database connection issue. Please try again in a few moments.' 
+      });
+    } else {
+      res.status(500).json({ 
+        success: false, 
+        message: 'Server error during registration.' 
+      });
+    }
   }
 };
 
@@ -53,6 +63,16 @@ export const loginUser = async (req, res, next) => {
       res.status(401).json({ success: false, message: 'Invalid email or password.' });
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Server error during login.' });
+    if (error.name === 'MongoNetworkError' || error.name === 'MongoServerError') {
+      res.status(503).json({ 
+        success: false, 
+        message: 'Database connection issue. Please try again in a few moments.' 
+      });
+    } else {
+      res.status(500).json({ 
+        success: false, 
+        message: 'Server error during login.' 
+      });
+    }
   }
 };
