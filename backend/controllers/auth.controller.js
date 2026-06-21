@@ -28,17 +28,27 @@ export const registerUser = async (req, res, next) => {
       res.status(400).json({ success: false, message: 'Invalid user registration input data.' });
     }
   } catch (error) {
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map((err) => err.message).join(' ');
+      return res.status(400).json({ success: false, message: messages });
+    }
+
+    if (error.code === 11000) {
+      return res.status(400).json({ success: false, message: 'This email is already registered.' });
+    }
+
     if (error.name === 'MongoNetworkError' || error.name === 'MongoServerError') {
-      res.status(503).json({ 
-        success: false, 
-        message: 'Database connection issue. Please try again in a few moments.' 
-      });
-    } else {
-      res.status(500).json({ 
-        success: false, 
-        message: 'Server error during registration.' 
+      return res.status(503).json({
+        success: false,
+        message: 'Database connection issue. Please try again in a few moments.',
       });
     }
+
+    console.error('Registration error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during registration.',
+    });
   }
 };
 
